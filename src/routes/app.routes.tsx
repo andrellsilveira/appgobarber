@@ -2,6 +2,9 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Dashboard from '../pages/Dashboard';
+import Profile from '../pages/Profile';
+import AppointmentCreated from '../pages/AppointmentCreated';
+import CreateAppointment from '../pages/CreateAppointment';
 
 /**
  * Cria um novo navigator para definição e gerenciamento das rotas
@@ -31,6 +34,9 @@ const AppRoutes: React.FC = () => (
      * de uma rota
      */}
     <App.Screen name="Dashboard" component={Dashboard} />
+    <App.Screen name="AppointmentCreated" component={AppointmentCreated} />
+    <App.Screen name="CreateAppointment" component={CreateAppointment} />
+    <App.Screen name="Profile" component={Profile} />
   </App.Navigator>
 );
 
