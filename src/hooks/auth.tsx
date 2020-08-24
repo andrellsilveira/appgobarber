@@ -31,6 +31,7 @@ interface AuthContextData {
   loading: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  updateUser(user: User): Promise<void>;
 }
 
 /**
@@ -135,6 +136,27 @@ const AuthProvider: React.FC = ({ children }) => {
     setData({} as AuthState);
   }, []);
 
+  /**
+   * A propriedade "Partial" (Partial<User>) indica que os atributos de determinada
+   * classe/interface podem ou não ser passados para a função, ou seja, torna todos
+   * os atributos opcionais
+   */
+  const updateUser = useCallback(
+    async (user: User) => {
+      setData({
+        token: data.token,
+        user,
+      });
+
+      /**
+       * Valores não comuns como string, number e boolean precisam ser
+       * convertidos para JSON
+       */
+      await AsyncStorage.setItem('@GoBarber:user', JSON.stringify(user));
+    },
+    [setData, data.token],
+  );
+
   return (
     /**
      * A propriedade "Provider" do contexto, identifica que todos
@@ -144,7 +166,9 @@ const AuthProvider: React.FC = ({ children }) => {
      * demais componentes da aplicação deverão estar especificados
      * no atributo "value" do Provider
      */
-    <AuthContext.Provider value={{ user: data.user, loading, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ user: data.user, loading, signIn, signOut, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
